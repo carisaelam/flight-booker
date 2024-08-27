@@ -51,16 +51,19 @@ class FlightsController < ApplicationController
   end
 
   def search
-    Rails.logger.debug("search params: #{params.inspect}")
     @flights = Flight.all
 
     @flights = @flights.where(departure_airport_id: params[:departure_airport]) if params[:departure_airport].present?
 
     @flights = @flights.where(arrival_airport_id: params[:arrival_airport]) if params[:arrival_airport].present?
 
-    @flights = @flights.where("number_of_passengers >= ?", params[:number_of_passengers]) if params[:number_of_passengers].present?
+    # @flights = @flights.where("number_of_passengers >= ?", params[:number_of_passengers]) if params[:number_of_passengers].present?
 
     @flights = @flights.where(start_date_time: params[:flight_date]) if params[:flight_date].present?
+
+    if @flights.empty?
+      flash[:notice] = "No flights found"
+    end
   end
 
 
