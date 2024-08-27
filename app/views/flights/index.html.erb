@@ -16,7 +16,7 @@
   <br>
   
   <%= label_tag :arrival_airport, "Arrival Airport" %>
-  <%= form.select :arrival_airport, Airport.order(:airport_code).map { |airport| [airport.airport_code]}%>
+  <%= form.select :arrival_airport, Airport.order(:airport_code).map { |airport| [airport.airport_code, airport.airport_code]}%>
 
   <br>
 
@@ -27,7 +27,7 @@
 
   <%= label_tag :flight_date, "Flight Date" %>
   <%= form.select :flight_date, Flight.order(:start_date_time).map {
-   |flight| [flight.start_date_time]}%>
+   |flight| [flight.start_date_time.strftime("%B %d, %Y %H:%M"), flight.start_date_time]}%>
 <% end %>
 
 

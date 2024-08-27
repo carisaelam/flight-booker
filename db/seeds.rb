@@ -16,7 +16,7 @@ Flight.create!([
   {
     departure_airport: Airport.first,
     arrival_airport: Airport.find(2),
-    start_date_time: DateTime.now,
+    start_date_time: DateTime.now - 1,
     flight_duration: 120
   },
   {
@@ -28,13 +28,13 @@ Flight.create!([
   {
     departure_airport: Airport.find(3),
     arrival_airport: Airport.find(4),
-    start_date_time: DateTime.now,
+    start_date_time: DateTime.now + 5,
     flight_duration: 300
   },
   {
     departure_airport: Airport.find(2),
     arrival_airport: Airport.find(1),
-    start_date_time: DateTime.now,
+    start_date_time: DateTime.now + 30,
     flight_duration: 300
   }
 ])
