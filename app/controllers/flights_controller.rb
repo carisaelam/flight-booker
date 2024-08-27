@@ -1,25 +1,20 @@
 class FlightsController < ApplicationController
   before_action :set_flight, only: %i[ show edit update destroy ]
 
-  # GET /flights or /flights.json
   def index
     @flights = Flight.all
   end
 
-  # GET /flights/1 or /flights/1.json
   def show
   end
 
-  # GET /flights/new
   def new
     @flight = Flight.new
   end
 
-  # GET /flights/1/edit
   def edit
   end
 
-  # POST /flights or /flights.json
   def create
     @flight = Flight.new(flight_params)
 
@@ -34,7 +29,6 @@ class FlightsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /flights/1 or /flights/1.json
   def update
     respond_to do |format|
       if @flight.update(flight_params)
@@ -47,7 +41,6 @@ class FlightsController < ApplicationController
     end
   end
 
-  # DELETE /flights/1 or /flights/1.json
   def destroy
     @flight.destroy!
 
@@ -57,6 +50,15 @@ class FlightsController < ApplicationController
     end
   end
 
+  def search
+    if params[:search].blank?
+      @flights = Flight.all
+    else
+      @flights = Flight.search(params)
+    end
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_flight
@@ -65,6 +67,6 @@ class FlightsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def flight_params
-      params.require(:flight).permit(:departure_airport_id, :arrival_airport_id, :start_date_time, :flight_duration)
+      params.require(:flight).permit(:departure_airport_id, :arrival_airport_id, :start_date_time, :flight_duration, :search)
     end
 end
