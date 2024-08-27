@@ -1,10 +1,41 @@
-<%# Create a search form to submit using GET (not POST) request back to the same URL %>
 
 
-<%= form_tag search_flights_path, method: :get do %>
+<%= form_with url: search_flights_path, method: :get do %>
+  <%= label_tag :search, "Search for Flights" %>
   <%= text_field_tag :search, nil, placeholder: 'Search' %>
   <%= submit_tag "Search" %>
 <% end %>
+
+
+<%# Dropdowns %>
+
+<%= form_with url: search_flights_path, method: :get do |form| %>
+  <%= label_tag :departure_airport, "Departure Airport" %>
+  <%= form.select :departure_airport, Airport.order(:airport_code).map { |airport| [airport.airport_code]}%>
+
+  <br>
+  
+  <%= label_tag :arrival_airport, "Arrival Airport" %>
+  <%= form.select :arrival_airport, Airport.order(:airport_code).map { |airport| [airport.airport_code]}%>
+
+  <br>
+
+  <%= label_tag :number_of_passengers, "Number of Passengers" %>
+  <%= form.select :number_of_passengers, [1, 2, 3, 4]%>
+  
+  <br>
+
+  <%= label_tag :flight_date, "Flight Date" %>
+  <%= form.select :flight_date, Flight.order(:start_date_time).map {
+   |flight| [flight.start_date_time]}%>
+<% end %>
+
+
+
+<%# End of Dropdowns %>
+
+
+
 
 <p style="color: green"><%= notice %></p>
 
@@ -18,7 +49,9 @@
     <p>
       <%= link_to "Show this flight", flight %>
     </p>
+    <br>
   <% end %>
 </div>
+
 
 <%= link_to "New flight", new_flight_path %>
