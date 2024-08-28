@@ -1,6 +1,9 @@
+<p style="color: green"><%= notice %></p>
 
 
-<%= form_with url: search_flights_path, method: :get do |form| %>
+<%# Search form %>
+
+<%= form_with url: flights_path, method: :get do |form| %>
   <%= form.label :departure_airport, "Departure Airport" %>
   <%= form.select :departure_airport, Airport.order(:airport_code).map { |airport| [airport.airport_code, airport.id] }, { include_blank: 'Select Airport' } %>
 
@@ -24,24 +27,48 @@
   <%= form.submit "Search" %>
 <% end %>
 
+<br>
+
+<%# End Search form %>
 
 
 
-<p style="color: green"><%= notice %></p>
+<%# Selection form %>
+
+<h2>Selection form goes here</h2>
 
 <% content_for :title, "Flights" %>
-
 <h1>Flights</h1>
 
-<div id="flights">
-  <% @flights.each do |flight| %>
-    <%= render flight %>
-    <p>
-      <%= link_to "Show this flight", flight %>
-    </p>
-    <br>
-  <% end %>
-</div>
+<%= form_with url: flights_path, method: :get do |form| %>
+
+    <% @flights.each do |flight| %>
+      <% flight_details = capture do %>
+        <%= render partial: "flight", locals: { flight: flight } %>
+      <% end %>
+
+      <%= form.radio_button :selected_flight, flight_details.html_safe %>
+
+      <%= flight_details.html_safe %>
+ 
+      <p>
+        <%= link_to "Show this flight", flight %>
+      </p>
+      <br>
+    <% end %>
+
+    <%= form.submit 'Book this flight' %>
+<% end %>
+
+
+<h2>End of selection form</h2>
+<%# End Selection form %>
+
+
+
+
+
+
 
 
 <%= link_to "New flight", new_flight_path %>
