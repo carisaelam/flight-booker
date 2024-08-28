@@ -44,6 +44,7 @@
 
 <%= form_with url: flights_path, method: :get do |form| %>
 
+
     <% @flights.each do |flight| %>
       <% flight_details = capture do %>
         <%= render partial: "flight", locals: { flight: flight } %>
@@ -53,6 +54,8 @@
 
       <%= flight_details.html_safe %>
  
+      <%= hidden_field :number_of_passengers, :number_of_passengers %>
+      
       <p>
         <%= link_to "Show this flight", flight %>
       </p>

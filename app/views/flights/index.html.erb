@@ -42,7 +42,10 @@
 <% content_for :title, "Flights" %>
 <h1>Flights</h1>
 
-<%= form_with url: flights_path, method: :get do |form| %>
+<%= form_with url: flights_path, method: :get, local: true do |form| %>
+
+    <%= form.hidden_field :number_of_passengers, value: @number_of_passengers %>
+  
 
     <% @flights.each do |flight| %>
       <% flight_details = capture do %>
