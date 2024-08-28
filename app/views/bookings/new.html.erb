@@ -1,0 +1,37 @@
+<%# Selected Booking %>
+
+<% content_for :title, "New booking" %>
+
+<h1>Selected Booking</h1>
+
+<p>Number of passengers: </p>
+<%= @number_of_passengers %>
+<h3>Selected flight: </h3>
+
+<% if @flight %>
+  <%= @flight.departure_airport.airport_code %>
+  -->
+  <%= @flight.arrival_airport.airport_code %>
+  <br>
+  <br>
+  <%= @flight.start_date_time.strftime("%m/%d/%Y %H:%M:%S") %>
+  <br>
+  <br>
+  <p><%= @flight.flight_duration %> minutes</p>
+<% else %>
+  <p>no flight........</p>
+<% end %>
+<br>
+<%# End Selected Booking %>
+
+
+<%# Passenger Information %>
+
+  passenger info form here
+
+<%# End Passenger Information %>
+
+
+<%# render "form", flight: @flight %>
+
+

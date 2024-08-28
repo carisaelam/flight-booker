@@ -42,7 +42,7 @@
 <% content_for :title, "Flights" %>
 <h1>Flights</h1>
 
-<%= form_with url: flights_path, method: :get, local: true do |form| %>
+<%= form_with url: new_booking_path, method: :get, local: true do |form| %>
 
     <%= form.hidden_field :number_of_passengers, value: @number_of_passengers %>
   
@@ -52,9 +52,12 @@
         <%= render partial: "flight", locals: { flight: flight } %>
       <% end %>
 
-      <%= form.radio_button :selected_flight, flight_details.html_safe %>
+      <%= form.radio_button :selected_flight, flight.id %>
 
       <%= flight_details.html_safe %>
+
+      <p>number of passengers...........</p>
+      <p><%= @number_of_passengers %> </p>
  
       <p>
         <%= link_to "Show this flight", flight %>

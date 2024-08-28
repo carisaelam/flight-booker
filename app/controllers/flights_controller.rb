@@ -10,7 +10,9 @@ class FlightsController < ApplicationController
 
     # @flights = @flights.where("number_of_passengers >= ?", params[:number_of_passengers]) if params[:number_of_passengers].present?
 
-    @number_of_passengers = params[:number_of_passengers] || ""
+
+    @number_of_passengers = params[:number_of_passengers] || 1
+
 
     if params[:flight_date].present?
       # Convert flight_date to a Date object and find flights on that date

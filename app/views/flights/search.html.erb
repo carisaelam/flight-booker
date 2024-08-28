@@ -42,7 +42,7 @@
 <% content_for :title, "Flights" %>
 <h1>Flights</h1>
 
-<%= form_with url: flights_path, method: :get do |form| %>
+<%= form_with url: new_booking_path, method: :get do |form| %>
 
 
     <% @flights.each do |flight| %>
