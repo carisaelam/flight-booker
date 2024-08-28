@@ -1,0 +1,14 @@
+<% flight = Flight.find(@booking.flight_id) %>
+
+<h1>Flight Booked! 🛫</h1>
+<%= render flight %>
+
+<p>Booking Id</p>
+<%= @booking.id %>
+
+<p>Passengers: </p>
+<% @booking.passengers.each do |passenger| %> 
+  <%= passenger.name %>
+<% end %>
+
+<%= link_to bookings_path, "All Bookings" %>

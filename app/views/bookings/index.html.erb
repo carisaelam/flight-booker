@@ -1,0 +1,15 @@
+
+<% @booking.each do |booking| %> 
+  <p>Booking ID: <%= booking.id %> </p> 
+  <br>
+  <% if booking.passengers.any? %>
+    <p>Passengers: </p>
+    <% booking.passengers.each do |passenger| %>
+      <%= passenger.name %>
+    <% end %>
+  <% end %>
+  <br>
+<% end %> 
+
+
+
