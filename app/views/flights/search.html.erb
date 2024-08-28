@@ -1,4 +1,7 @@
+<p style="color: green"><%= notice %></p>
 
+
+<%# Search form %>
 
 <%= form_with url: flights_path, method: :get do |form| %>
   <%= form.label :departure_airport, "Departure Airport" %>
@@ -16,40 +19,53 @@
 
   <br>
 
-  <%= form.label :flight_date, "Flight Date" %>
-  <%= form.datetime_select :flight_date, { include_blank: "Select Date and Time" } %>
+  <%= label_tag :flight_date, "Flight Date" %>
+  <%= form.select :flight_date, Flight.order(:start_date_time).map {
+    |flight| [flight.start_date_time.strftime("%m/%d/%Y"), flight.start_date_time.strftime("%m/%d/%Y")]}, { include_blank: 'Select Date and Time' }%>
+
 
   <br>
 
   <%= form.submit "Search" %>
 <% end %>
 
+<br>
 
-<%# Dropdowns %>
-
-
-
-
-<%# End of Dropdowns %>
+<%# End Search form %>
 
 
 
+<%# Selection form %>
 
-<p style="color: green"><%= notice %></p>
+<h2>Selection form goes here</h2>
 
 <% content_for :title, "Flights" %>
-
 <h1>Flights</h1>
 
-<div id="flights">
-  <% @flights.each do |flight| %>
-    <%= render flight %>
-    <p>
-      <%= link_to "Show this flight", flight %>
-    </p>
-    <br>
-  <% end %>
-</div>
+<%= form_with url: flights_path, method: :get do |form| %>
+
+    <% @flights.each do |flight| %>
+      <% flight_details = capture do %>
+        <%= render partial: "flight", locals: { flight: flight } %>
+      <% end %>
+
+      <%= form.radio_button :selected_flight, flight_details.html_safe %>
+
+      <%= flight_details.html_safe %>
+ 
+      <p>
+        <%= link_to "Show this flight", flight %>
+      </p>
+      <br>
+    <% end %>
+
+    <%= form.submit 'Book this flight' %>
+<% end %>
+
+
+<h2>End of selection form</h2>
+<%# End Selection form %>
+
 
 
 <%= link_to "New flight", new_flight_path %>

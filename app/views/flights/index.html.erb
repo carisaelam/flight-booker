@@ -19,8 +19,10 @@
 
   <br>
 
-  <%= form.label :flight_date, "Flight Date" %>
-  <%= form.datetime_select :flight_date, { include_blank: "Select Date and Time" } %>
+  <%= label_tag :flight_date, "Flight Date" %>
+  <%= form.select :flight_date, Flight.order(:start_date_time).map {
+    |flight| [flight.start_date_time.strftime("%m/%d/%Y"), flight.start_date_time.strftime("%m/%d/%Y")]}, { include_blank: 'Select Date and Time' }%>
+
 
   <br>
 
@@ -63,11 +65,6 @@
 
 <h2>End of selection form</h2>
 <%# End Selection form %>
-
-
-
-
-
 
 
 

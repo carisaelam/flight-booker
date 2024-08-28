@@ -10,7 +10,11 @@ class FlightsController < ApplicationController
 
     # @flights = @flights.where("number_of_passengers >= ?", params[:number_of_passengers]) if params[:number_of_passengers].present?
 
-    @flights = @flights.where(start_date_time: params[:flight_date]) if params[:flight_date].present?
+    if params[:flight_date].present?
+      # Convert flight_date to a Date object and find flights on that date
+      flight_date = Date.strptime(params[:flight_date], "%m/%d/%Y")
+      @flights = @flights.where(start_date_time: flight_date.beginning_of_day..flight_date.end_of_day)
+    end
 
     if @flights.empty?
       flash[:notice] = "No flights found"
