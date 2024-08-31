@@ -1,8 +1,8 @@
 <p style="color: green"><%= notice %></p>
 
-
+<div data-controller="colorme">
 <%# Search form %>
-
+<h1 data-colorme-target='text'>Search for Flights</h1>
 <%= form_with url: flights_path, method: :get do |form| %>
   <%= form.label :departure_airport, "Departure Airport" %>
   <%= form.select :departure_airport, Airport.order(:airport_code).map { |airport| [airport.airport_code, airport.id] }, { include_blank: 'Select Airport' } %>
@@ -31,15 +31,19 @@
 
 <br>
 
+
+  <h2 data-colorme-target='text'>Texty Text</h2>
+  <button data-action='click->colorme#changeToRed'>Color Me!</button>
+
+
 <%# End Search form %>
 
 
 
 <%# Selection form %>
 
-
 <% content_for :title, "Flights" %>
-<h1>Flights</h1>
+<h1 data-colorme-target='text'>Flights</h1>
 
 <%= form_with url: new_booking_path, method: :get, local: true do |form| %>
 
@@ -66,12 +70,11 @@
     <%= form.submit 'Book this flight' %>
 <% end %>
 
-
-<h2>End of selection form</h2>
 <%# End Selection form %>
 
 
 
 <%= link_to "New flight", new_flight_path %>
-
 <%= link_to "All flights", root_path %>
+
+</div>

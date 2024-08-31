@@ -1,54 +1,71 @@
-<%# Selected Booking %>
 
-<% content_for :title, "New booking" %>
+<div data-controller="booking">
+  <% content_for :title, "New booking" %>
+  <h1>Selected Booking</h1>
 
-<h1>Selected Booking</h1>
-
-<%= form_with(model: @booking, local: true) do |form| %>
-
-  <p>Number of passengers: </p>
-  <%= @number_of_passengers %>
-  <h3>Selected flight: </h3>
-
-  <% if @flight %>
-    <%= @flight.departure_airport.airport_code %>
-    -->
-    <%= @flight.arrival_airport.airport_code %>
+  <%= form_with(model: @booking, local: true) do |form| %>
+  
+    <p>Number of passengers: <%= @number_of_passengers %></p> 
+    <h3>Selected flight: </h3>
+  
+    <div>
+      <% if @flight %>
+        <%= @flight.departure_airport.airport_code %>
+        -->
+        <%= @flight.arrival_airport.airport_code %>
+        <br>
+        <br>
+        <%= @flight.start_date_time.strftime("%m/%d/%Y %H:%M:%S") %>
+        <br>
+        <br>
+        <p><%= @flight.flight_duration %> minutes</p>
+      <% else %>
+        <p>no flight found.</p>
+      <% end %>
+    </div>
     <br>
-    <br>
-    <%= @flight.start_date_time.strftime("%m/%d/%Y %H:%M:%S") %>
-    <br>
-    <br>
-    <p><%= @flight.flight_duration %> minutes</p>
-  <% else %>
-    <p>no flight........</p>
+  
+  
+  
+    <%# Passenger Information %>
+      <%= form.hidden_field :flight_id, value: @flight.id %>
+
+      <h2>Passenger Details</h2>
+
+      <% @booking.passengers.each_with_index do |passenger, i| %>
+          <%= form.fields_for :passengers, passenger do |passenger_form| %>
+            <%= passenger_form.label :name, "Passenger Name" %>
+            <%= passenger_form.text_field :name %>
+            <br>
+            <%= passenger_form.label :email, "Passenger Email" %>
+            <%= passenger_form.text_field :email %>
+            <br>
+          <% end %>
+      <% end %>
+    <%# End Passenger Information %>
+
+    <div class='addedPassengers' data-booking-target='addedPassengers'></div>
+    <button data-action='click->booking#addPassenger'>Add Passenger</button>
+    <button data-action='click->booking#removePassenger'>Remove Passenger</button>
+
+    <%# Template %>
+        <template id="passengeradd" data-booking-target='template'>
+          <div>
+            <%= form.fields_for :passengers, @booking.passengers.first do |passenger_form| %>
+                <%= passenger_form.label :name, "Passenger Name" %>
+                <%= passenger_form.text_field :name %>
+                <br>
+                <%= passenger_form.label :email, "Passenger Email" %>
+                <%= passenger_form.text_field :email %>
+                <br>
+            <% end %>
+          </div>
+        </template>
+    <%# End Template %>
+  
+    <%= form.submit 'Book it!' %>
   <% end %>
-  <br>
-  <%# End Selected Booking %>
-
-
-  <%# Passenger Information %>
-
-    <%= form.hidden_field :flight_id, value: @flight.id %>
-
-    <% @booking.passengers.each_with_index do |passenger, i| %>
-        <h2>Passenger Details</h2>
-        
-
-        <%= form.fields_for :passengers, passenger do |passenger_form| %>
-          <%= passenger_form.label :name, "Passenger #{i + 1} Name" %>
-          <%= passenger_form.text_field :name %>
-          <br>
-          <%= passenger_form.label :email, "Passenger #{i + 1} Email" %>
-          <%= passenger_form.text_field :email %>
-        <% end %>
-    
-      <br>
-    <% end %>
-
-  <%= form.submit 'Book it!' %>
-  <%# End Passenger Information %>
-<% end %>
+</div>
 
 
 
