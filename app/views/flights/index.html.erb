@@ -15,7 +15,8 @@
   <br>
 
   <%= form.label :number_of_passengers, "Number of Passengers" %>
-  <%= form.select :number_of_passengers, (1..4).to_a, { include_blank: 'Select Number'}, { required: true }%>
+  <%= form.select :number_of_passengers, (1..4).to_a, { include_blank: 'Select Number' }, { required: true } %>
+
 
   <br>
 
@@ -27,6 +28,7 @@
   <br>
 
   <%= form.submit "Search" %>
+  <button data-action="click->colorme#displayFlights" data-colorme-target='display'>Display Flights</button>
 <% end %>
 
 <br>
@@ -42,33 +44,35 @@
 
 <%# Selection form %>
 
-<% content_for :title, "Flights" %>
-<h1 data-colorme-target='text'>Flights</h1>
-
-<%= form_with url: new_booking_path, method: :get, local: true do |form| %>
-
-    <%= form.hidden_field :number_of_passengers, value: @number_of_passengers %>
+<div data-colorme-target='flights' hidden>
+  <% content_for :title, "Flights" %>
+  <h1 data-colorme-target='text'>Flights</h1>
   
-
-    <% @flights.each do |flight| %>
-      <% flight_details = capture do %>
-        <%= render partial: "flight", locals: { flight: flight } %>
+  <%= form_with url: new_booking_path, method: :get, local: true do |form| %>
+  
+      <%= form.hidden_field :number_of_passengers, value: @number_of_passengers %>
+  
+  
+      <% @flights.each do |flight| %>
+        <% flight_details = capture do %>
+          <%= render partial: "flight", locals: { flight: flight } %>
+        <% end %>
+  
+        <%= form.radio_button :selected_flight, flight.id %>
+  
+        <%= flight_details.html_safe %>
+  
+  
+  
+        <p>
+          <%= link_to "Show this flight", flight %>
+        </p>
+        <br>
       <% end %>
-
-      <%= form.radio_button :selected_flight, flight.id %>
-
-      <%= flight_details.html_safe %>
-
-     
- 
-      <p>
-        <%= link_to "Show this flight", flight %>
-      </p>
-      <br>
-    <% end %>
-
-    <%= form.submit 'Book this flight' %>
-<% end %>
+  
+      <%= form.submit 'Book this flight' %>
+  <% end %>
+</div>
 
 <%# End Selection form %>
 
