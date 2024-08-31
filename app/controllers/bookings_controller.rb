@@ -1,6 +1,6 @@
 class BookingsController < ApplicationController
   def index
-    @booking = Booking.all
+    @bookings = Booking.all
   end
 
   def new
@@ -18,6 +18,9 @@ class BookingsController < ApplicationController
     Rails.logger.info("Booking Parameters: #{booking_params.inspect}")
 
     if @booking.save
+      @booking.passengers.each do |passenger|
+        PassengerMailer.booking_email(passenger).deliver_now
+      end
       redirect_to booking_path(@booking), notice: "Flight booked! ✈️"
     else
       Rails.logger.info("Booking save ERRORs: #{@booking.errors.full_messages}")
@@ -33,12 +36,5 @@ class BookingsController < ApplicationController
 
   def booking_params
     params.require(:booking).permit(:flight_id, passengers_attributes: [ :name, :email ])
-  end
-
-  def create_booking_passengers
-    params[:booking][:passengers_attributes].each do |_, passenger_params|
-      passenger = Passenger.create!(passenger_params)
-      BookingPassenger.create!(booking: @booking, passenger: passenger)
-    end
   end
 end
